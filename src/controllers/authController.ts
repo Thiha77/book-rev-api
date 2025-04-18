@@ -38,7 +38,7 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       return;
     } 
   
-    const token = signJwt({ id: user.id, email: user.email, isAdmin: user.isAdmin });
+    const token = signJwt({ id: user.id, name: user.name, email: user.email, isAdmin: user.isAdmin });
     const data: UserLoginResultPayload = {
       id: user.id,
       name: user.name,

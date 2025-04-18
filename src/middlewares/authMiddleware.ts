@@ -1,8 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { verifyJwt } from '../utils/jwt';
+import { User } from '@prisma/client';
+
+
+export type LoggedInUser = Pick<User , 'id' | 'name' | 'email' | 'isAdmin'> ;
 
 export interface AuthRequest extends Request {
-  user?: any; // You can type this better with your User interface
+  user?: LoggedInUser;
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction): void {
@@ -20,6 +24,6 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
     res.status(401).json({ message: 'Invalid or expired token' });
     return;
   }
-  req.user = decoded;
+  req.user = decoded as LoggedInUser; // Cast to your user type
   next();
 }
