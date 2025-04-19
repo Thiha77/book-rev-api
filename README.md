@@ -24,8 +24,10 @@ npm run start         # run project built version
 Routes
 
 Seed default admin user
+<pre>
     admin@gmail.com
     password
+</pre>
 Auth Type - Bearer Token for all routes except login and register
 Api Prefix - /api/v1
 <pre>
