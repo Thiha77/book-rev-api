@@ -18,19 +18,13 @@ const bookParamSchema = z.object({
 // });
 
 export const getBooks = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-    try {
         const books = await prisma.book.findMany({
             where: { isActive: true }
         });
         res.json(books);
-    } catch (error) {
-        next(error);
-    }
 };
 
 export const getBookById = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-
-    try {
         const { id } = bookParamSchema.parse(req.params);
         const book = await prisma.book.findUnique({
             where: {
@@ -43,9 +37,6 @@ export const getBookById = async(req: Request, res: Response, next: NextFunction
             return;
         }
         res.json(book);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const createBook = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
@@ -62,7 +53,6 @@ export const createBook = async(req: Request, res: Response, next: NextFunction)
         res.status(404).json({ message: 'Author not found' });
         return;
     }
-    try {
         const book = await prisma.book.create({
             data: validatedData.data,
         });
@@ -70,9 +60,6 @@ export const createBook = async(req: Request, res: Response, next: NextFunction)
             ...book
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const updateBook = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
@@ -90,7 +77,6 @@ export const updateBook = async(req: Request, res: Response, next: NextFunction)
         res.status(404).json({ message: 'Author not found' });
         return;
     }
-    try {
         const book = await prisma.book.update({
             where: {
                 id: Number(id),
@@ -101,13 +87,9 @@ export const updateBook = async(req: Request, res: Response, next: NextFunction)
             ...book
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const deleteBook = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-    try {
         const { id } = bookParamSchema.parse(req.params);
         const book = await prisma.book.update({
             where: {
@@ -122,8 +104,4 @@ export const deleteBook = async(req: Request, res: Response, next: NextFunction)
             ...book
         }
         res.status(202).json(data);
-    } catch (error) {
-        next(error);
-    }
-    
 }

@@ -18,19 +18,15 @@ const reviewParamSchema = z.object({
 
 
 export const getReviews = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-    try {
-        const reviews = await prisma.review.findMany({
-            where: { isActive: true }
-        });
-        res.json(reviews);
-    } catch (error) {
-        next(error);
-    }
+
+    const reviews = await prisma.review.findMany({
+        where: { isActive: true }
+    });
+    res.json(reviews);
 };
 
 export const getReviewById = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
 
-    try {
         const { id } = reviewParamSchema.parse(req.params);
         const review = await prisma.review.findUnique({
             where: {
@@ -43,9 +39,6 @@ export const getReviewById = async(req: Request, res: Response, next: NextFuncti
             return;
         }
         res.json(review);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const createReview = async(req: AuthRequest, res: Response, next: NextFunction):Promise<void> => {
@@ -76,7 +69,6 @@ export const createReview = async(req: AuthRequest, res: Response, next: NextFun
         res.status(404).json({ message: 'Book not found' });
         return;
     }
-    try {
         const review = await prisma.review.create({
             data: {
                 ...validatedData.data,
@@ -87,9 +79,6 @@ export const createReview = async(req: AuthRequest, res: Response, next: NextFun
             ...review
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const updateReview = async(req: AuthRequest, res: Response, next: NextFunction):Promise<void> => {
@@ -114,9 +103,6 @@ export const updateReview = async(req: AuthRequest, res: Response, next: NextFun
         res.status(403).json({ message: 'You are not authorized to update this review' });
         return;
     }
-
-
-    try {
         const review = await prisma.review.update({
             where: {
                 id: Number(id),
@@ -127,13 +113,9 @@ export const updateReview = async(req: AuthRequest, res: Response, next: NextFun
             ...review
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const deleteReview = async(req: AuthRequest, res: Response, next: NextFunction):Promise<void> => {
-    try {
         const { id } = reviewParamSchema.parse(req.params);
 
         if (!req.user) {
@@ -163,8 +145,4 @@ export const deleteReview = async(req: AuthRequest, res: Response, next: NextFun
             ...review
         }
         res.status(202).json(data);
-    } catch (error) {
-        next(error);
-    }
-    
 }

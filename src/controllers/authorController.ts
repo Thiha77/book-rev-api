@@ -14,19 +14,13 @@ const authorParamSchema = z.object({
 });
 
 export const getAuthors = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-    try {
         const authors = await prisma.author.findMany({
             where: { isActive: true }
         });
         res.json(authors);
-    } catch (error) {
-        next(error);
-    }
 };
 
 export const getAuthorById = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-
-    try {
         const { id } = authorParamSchema.parse(req.params);
         const author = await prisma.author.findUnique({
             where: {
@@ -39,9 +33,6 @@ export const getAuthorById = async(req: Request, res: Response, next: NextFuncti
             return;
         }
         res.json(author);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const createAuthor = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
@@ -51,8 +42,6 @@ export const createAuthor = async(req: Request, res: Response, next: NextFunctio
       res.status(400).json({ error: validatedData.error.errors });
       return;
     }
-
-    try {
         const author = await prisma.author.create({
             data: validatedData.data,
         });
@@ -60,9 +49,6 @@ export const createAuthor = async(req: Request, res: Response, next: NextFunctio
             ...author
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const updateAuthor = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
@@ -74,7 +60,6 @@ export const updateAuthor = async(req: Request, res: Response, next: NextFunctio
       return;
     }
 
-    try {
         const author = await prisma.author.update({
             where: {
                 id: Number(id),
@@ -85,13 +70,10 @@ export const updateAuthor = async(req: Request, res: Response, next: NextFunctio
             ...author
         }
         res.status(201).json(data);
-    } catch (error) {
-        next(error);
-    }
 }
 
 export const deleteAuthor = async(req: Request, res: Response, next: NextFunction):Promise<void> => {
-    try {
+
         const { id } = authorParamSchema.parse(req.params);
         const author = await prisma.author.update({
             where: {
@@ -106,8 +88,4 @@ export const deleteAuthor = async(req: Request, res: Response, next: NextFunctio
             ...author
         }
         res.status(202).json(data);
-    } catch (error) {
-        next(error);
-    }
-    
 }

@@ -24,10 +24,8 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       return;
     }
     const { email, password } = validatedData.data;
-  
-    try {
-      const user = await prisma.user.findUnique({ where: { email } });
-      if (!user){
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user){
         res.status(401).json({ error: 'Invalid credentials' })
         return;
     }
@@ -47,48 +45,39 @@ export const login = async (req: Request, res: Response, next: NextFunction): Pr
       token
     }
     res.json({ data });
-    } catch (err) {
-      next(err);
-      console.error(err);
-    }
-  };
+};
 
-  export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const validatedData = createUserSchema.safeParse(req.body);
+export const register = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const validatedData = createUserSchema.safeParse(req.body);
 
 
-    if (!validatedData.success) {
-      res.status(400).json({ error: validatedData.error.errors });
-      return;
-    }
-    const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.data.email },
-    });
-    
-    if (existingUser) {
-      res.status(409).json({ error: 'Email already registered' });
-      return;
-    }
-    const { email, password, name } = validatedData.data;
-  
-    try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await prisma.user.create({
-        data: {
-          email,
-          password: hashedPassword,
-          name
-        }
-      });
-      const data : UserRegisterResultPayload = {
-        id: user.id,
-        name: user.name,
-        email: user.email
-      }
-      res.status(201).json({ data });
-    } catch (err) {
-      next(err);
-      console.error(err);
-    }
+  if (!validatedData.success) {
+    res.status(400).json({ error: validatedData.error.errors });
+    return;
   }
+  const existingUser = await prisma.user.findUnique({
+    where: { email: validatedData.data.email },
+  });
+  
+  if (existingUser) {
+    res.status(409).json({ error: 'Email already registered' });
+    return;
+  }
+  const { email, password, name } = validatedData.data;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashedPassword,
+        name
+      }
+    });
+    const data : UserRegisterResultPayload = {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    }
+    res.status(201).json({ data });
+};
 
