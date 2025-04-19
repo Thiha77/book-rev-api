@@ -21,7 +21,6 @@ npm run dev           # run project under localhost
 npm run build         # build project
 npm run start         # run project built version
 </pre>
-Routes
 
 Seed default admin user
 <pre>
@@ -34,7 +33,7 @@ Api Prefix - /api/v1
 e.g localhost:3000/api/v1/auth/login
     localhost:3000/api/v1/books
 </pre>
-
+Routes
 User
 <pre>
 Register a new user
