@@ -328,5 +328,16 @@ Return
 
 Delete a review by [id]
 DELETE  /reviews/[id]
+Return
+{
+    "id": 4,
+    "rating": 5,
+    "content": "This is the edit the one!!",
+    "userId": 1,
+    "bookId": 8,
+    "createdAt": "2025-04-19T18:16:56.112Z",
+    "updatedAt": "2025-04-19T18:19:26.358Z",
+    "isActive": false
+}
 </pre>
 
