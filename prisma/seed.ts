@@ -8,7 +8,7 @@ async function main() {
         create: {
             name: 'Admin',
             email: 'admin@gmail.com',
-            password: 'admin123',
+            password: '$2b$10$ZT0T5Ik.zVDUth0a7/8zteOrWoSQQ0Mra1X/W/1Rna5madrokRY3i',
             isAdmin: true,
         }
     });
